@@ -7,5 +7,5 @@ iOS Developer perspektifiyle hazırlanmış iOS mülakat notları ve derin tekni
 - [🧠 Swift Memory Management](SwiftMemoryManagement/)
 - [📦 Swift Value Types vs Reference Types](SwiftValueTypesVsReferenceTypes/)
 - [📘 Level 1 – Swift Interview Mixed Q&A](Level1SwiftInterviewMixedQA/)
-- [🛜 Task, Await & Completion Handler, Detaylar, Farklar](TaskAwaitCompletionHandlerEscaping/)
-- [♟️ MVVM, Clean Architecture & Adapter Pattern](MVVMCleanArchAdapterPatternApp/)
+- [🛜 Task, Await & Completion Handler](TaskAwaitCompletionHandlerEscaping/)
+- [♟️ MVVM, Clean Architecture & Adapter Pattern](https://github.com/ugurhmz/MVVM-CleanArch-AdapterPatternApp)
