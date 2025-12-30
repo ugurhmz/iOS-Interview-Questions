@@ -1,4 +1,4 @@
-# Task { ... } Ne İşe yarar? Task-await Vs Completion Handler/@escaping Farkı ve Detayları Nedir ?
+# 🛜 Task { ... } Ne İşe yarar? Task-await Vs Completion Handler/@escaping Farkı ve Detayları Nedir ?
 
 Senkron bir fonksiyon içinde asenkron kod çalıştırmayı sağlayan bir **concurrency** yapıdır.
 - **Ne işe yarar?** Mevcut kodun akışını bozmadan yeni bir asenkron kapsam oluşturur ve içindeki işlemleri arka planda (çakışma olmadan) başlatır.
@@ -457,3 +457,4 @@ Swift kodu satır satır okumaya çalışırdı ve `await` (bekleme) komutunu g�
 
 işte bu kadar. Artık completion nedir, task neden vardır, hangisinde ne kullanacağım durumunu güzelce netleştirdik. Umarım net bir şekilde anlatabilmişimdir. Benim en çok hoşuma gideni ise: Task çünkü callback hell çilesinden kurtarıyor.
 Bu yazı şimdilik bu kadar, iyi günler 🤘👋🏻
+
