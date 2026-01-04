@@ -33,7 +33,7 @@ Protocol için bilmemiz gereken **5 Kritik Teknik Kavram** daha var. Bunlar;
 
 ### **1. Associated Types (Generic Protocols)**
 
-Class'larda `class Box<T>` diyerek Generic yapabiliriz ama Protocol'lerde `<T>` kullanamayız. Bunun yerine `associatedtype` kullanırız.
+Class'larda class Box<T> diyerek Generic yapabiliriz ama Protocol'lerde <T> kullanamayız. Bunun yerine associatedtype kullanırız.
 
 **Örnek:** Bir "Depo" protokolü yazacağız ama ne depolayacağımızı (Kitap mı, Ayakkabı mı?) uygulayan sınıf seçsin.
 
@@ -58,12 +58,12 @@ Cevap: Çünkü Protocol bir tip değildir, bir şablondur. Derleme zamanında n
 
 ---
 
-### 2. `some` vs `any` (Swift 5.7+ Modern Dönem)
+### 2. some vs any (Swift 5.7+ Modern Dönem)
 
 "Opaque Types" vs "Existential Types".
 
-- **`any` (Existential Type):** Bir kutudur (Box). İçine o protokole uyan **herhangi** bir şey koyabilirsin. Tipi çalışma zamanında (Runtime’da) belli olur. Esnektir ama maliyetlidir.
-- **`some` (Opaque Type):** Derleyiciye "Buradan tek bir tip dönecek ama dışarıya söylemiyorum" deriz. Tipi derleme zamanında (Compile time) bellidir. Performansı çok yüksektir. (SwiftUI'daki `var body: some View` buradan gelir
+- **any (Existential Type):** Bir kutudur (Box). İçine o protokole uyan **herhangi** bir şey koyabilirsin. Tipi çalışma zamanında (Runtime’da) belli olur. Esnektir ama maliyetlidir.
+- **some (Opaque Type):** Derleyiciye "Buradan tek bir tip dönecek ama dışarıya söylemiyorum" deriz. Tipi derleme zamanında (Compile time) bellidir. Performansı çok yüksektir. (SwiftUI'daki var body: some View buradan gelir
 
 ```swift
 // any: "Bana uyan HERHANGİ BİR TÜR dönebilirim, kutuya koyarım." (Daha yavaş, dinamik)
@@ -156,7 +156,7 @@ Bu hatayı bulmak saatlerimizi alabilir çünkü kodda "Hata" yok, sadece **yanl
 
 **Nasıl Düzeltiriz?**
 
-Çok basit. `warn()` fonksiyonunu protokolün içine  eklersek, derleyici artık "Ha, bu sözleşmede (protocol’de) varmış, gidip Class'takini çalıştırayım" der.
+Çok basit. warn() fonksiyonunu protokolün içine  eklersek, derleyici artık "Ha, bu sözleşmede (protocol’de) varmış, gidip Class'takini çalıştırayım" der.
 
 ```swift
 protocol Logger {
@@ -167,8 +167,8 @@ protocol Logger {
 
 | **Fonksiyon Nerede Tanımlı?** | **Dispatch Türü** | **Çalışma Mantığı** | **Override Çalışır mı?** |
 | --- | --- | --- | --- |
-| **Protocol içinde imzası VAR** | **Dynamic Dispatch** (Table Dispatch) | Çalışma anında (Runtime) asıl sınıfın (`MyLogger`) kodu bulunur. | **EVET ✅** |
-| **Protocol içinde imzası YOK (Sadece Ext.)** | **Static Dispatch** (Direct Dispatch) | Derleme anında (Compile time) direkt Extension kodu yapıştırılır. | **HAYIR ❌** |
+| **Protocol içinde imzası VAR** | **Dynamic Dispatch** (Table Dispatch) | Çalışma anında (Runtime) asıl sınıfın (MyLogger) kodu bulunur. | **EVET ✔︎** |
+| **Protocol içinde imzası YOK (Sadece Ext.)** | **Static Dispatch** (Direct Dispatch) | Derleme anında (Compile time) direkt Extension kodu yapıştırılır. | **HAYIR ✖️** |
 
 ÇOK Önemli not:  Neden **let logger: Logger = MyLogger()** böyle yaptık?
 
@@ -184,8 +184,8 @@ let logger: Logger = MyLogger()
 let logger: Logger
 ```
 
-- **Ne diyoruz:** "Benim değişkenimin tipi `Logger` protokolüdür."
-- **Derleyici (Compiler) ne görür:** Derleyici bu satırdan sonra `logger` değişkenine baktığında **MyLogger'ı görmez**, sadece **Logger protokolünü** görür. `MyLogger` içinde 100 tane farklı fonksiyon olsa bile, eğer bunlar `Logger` protokolünde tanımlı değilse, onlara erişemezsin.
+- **Ne diyoruz:** "Benim değişkenimin tipi Logger protokolüdür."
+- **Derleyici (Compiler) ne görür:** Derleyici bu satırdan sonra logger değişkenine baktığında **MyLogger'ı görmez**, sadece **Logger protokolünü** görür. MyLogger içinde 100 tane farklı fonksiyon olsa bile, eğer bunlar Logger protokolünde tanımlı değilse, onlara erişemezsin.
 
 <br>
 
@@ -196,16 +196,16 @@ let logger: Logger
 = MyLogger()
 ```
 
-- **Ne diyoruz:** "Hafızada (RAM) gerçekten bir `MyLogger` objesi yarat."
-- **Gerçekte ne var:** Hafızada kanlı canlı bir `MyLogger` class'ı duruyor.
+- **Ne diyoruz:** "Hafızada (RAM) gerçekten bir MyLogger objesi yarat."
+- **Gerçekte ne var:** Hafızada kanlı canlı bir MyLogger class'ı duruyor.
 
 ---
 
-"Ben şu an `MyLogger` kullanıyorum ama kodun geri kalanı `MyLogger` sınıfına bağımlı olmasın. Onlar sadece bir `Logger` ile konuştuğunu bilsin."
+"Ben şu an MyLogger kullanıyorum ama kodun geri kalanı MyLogger sınıfına bağımlı olmasın. Onlar sadece bir Logger ile konuştuğunu bilsin."
 
-1. **Erişim Kısıtlaması (Sol Taraf):** "Ben `logger` değişkenini kullanırken, bana **sadece** `Logger` protokolünde tanımlı olan fonksiyonları göster. Eğer `MyLogger` sınıfının içinde kendine özel başka fonksiyonlar varsa, onları bana **gösterme ve kullandırma** (gizle)."
+1. **Erişim Kısıtlaması (Sol Taraf):** "Ben logger değişkenini kullanırken, bana **sadece** Logger protokolünde tanımlı olan fonksiyonları göster. Eğer MyLogger sınıfının içinde kendine özel başka fonksiyonlar varsa, onları bana **gösterme ve kullandırma** (gizle)."
 
-2. **Çalıştırma Emri (Sağ Taraf):** "Ama program çalıştığında, arka planda **gerçekten** `MyLogger` sınıfının kodlarını çalıştır."
+2. **Çalıştırma Emri (Sağ Taraf):** "Ama program çalıştığında, arka planda **gerçekten** MyLogger sınıfının kodlarını çalıştır."
 
 **Özetle:**
 "Hafızada **MyLogger** yarat, ama kod yazarken ona sadece **Logger** kurallarıyla erişmeme izin ver."
@@ -217,11 +217,11 @@ let logger: Logger
 
 Bunu yapmamızın tek ve devasa bir sebebi var: **Bağımlılığı Yok Etmek (Decoupling).**
 
-Eğer kodumuzu `MyLogger` sınıfına (Class) göre yazarsak, o sınıfa **nikah kıymış oluruz :D.** Yarın öbür gün o sınıfı değiştirmek istersek, kodu yazdığın her yeri tek tek bulup değiştirmemiz gerekir. Ama kodumuzu `Logger` protokolüne göre yazarsan:
+Eğer kodumuzu MyLogger sınıfına (Class) göre yazarsak, o sınıfa **nikah kıymış oluruz :D.** Yarın öbür gün o sınıfı değiştirmek istersek, kodu yazdığın her yeri tek tek bulup değiştirmemiz gerekir. Ama kodumuzu Logger protokolüne göre yazarsan:
 
-- **Kodumuz `MyLogger` sınıfını tanımaz.**
+- **Kodumuz MyLogger sınıfını tanımaz.**
 - Sadece "Log atabilen herhangi bir şey" ile çalıştığını bilir.
-- Yarın `MyLogger` silip yerine `CloudLogger` koyduğumuzda, kodunun geri kalanı (sol taraf değişmediği için) bozulmadan çalışmaya devam eder.
+- Yarın MyLogger silip yerine CloudLogger koyduğumuzda, kodunun geri kalanı (sol taraf değişmediği için) bozulmadan çalışmaya devam eder.
 
 Amaç: Kodun "Kiminle" çalıştığını bilmesin, sadece "Ne iş yapabildiğiyle" ilgilensin. Böylece parçaları (Class'ları) istediğin gibi söküp takabilirsin.
 
@@ -232,11 +232,11 @@ Amaç: Kodun "Kiminle" çalıştığını bilmesin, sadece "Ne iş yapabildiğiy
 
 **b-  Bu Polymorphism (Çok Biçimlilik) mi?**
 
-**Evet, tam olarak budur.** Polymorphism'in kelime anlamı "Çok Biçimlilik"tir. Buradaki `logger` değişkeni **Tek Bir İsimdir** ama **Çok Farklı Biçimlere** girebilir.
+**Evet, tam olarak budur.** Polymorphism'in kelime anlamı "Çok Biçimlilik"tir. Buradaki logger değişkeni **Tek Bir İsimdir** ama **Çok Farklı Biçimlere** girebilir.
 
-- Bugün: `let logger: Logger = MyLogger()` (Biçimi: MyLogger)
-- Yarın: `let logger: Logger = DatabaseLogger()` (Biçimi: DatabaseLogger)
-- Testte: `let logger: Logger = FakeLogger()` (Biçimi: FakeLogger)
+- Bugün: let logger: Logger = MyLogger() (Biçimi: MyLogger)
+- Yarın: let logger: Logger = DatabaseLogger() (Biçimi: DatabaseLogger)
+- Testte: let logger: Logger = FakeLogger() (Biçimi: FakeLogger)
 
 Tam özetleyen Cümlemiz → Tek bir değişkenin (`logger`), arkasında farklı farklı Class'lar gibi davranabilmesine Polymorphism denir.
 
@@ -291,14 +291,14 @@ Yani sol tarafa Protocol tipini veririz, sağ tarafa ise bu protokolü uygulayan
 
 Protocoller değişkenin kendisini (hafızadaki yerini) tutmazlar. Sadece **erişim kuralını** (Rule) belirlerler.
 
-### 1. `{ get }` (Sadece Okunabilir Olsun Yeter)
+### 1. { get } (Sadece Okunabilir Olsun Yeter)
 
 Protocol der ki: *"Bana bu veriyi ver de nasıl verirsen ver."*
 
 - Bunu uygulayan (conform eden) taraf:
-    - `let` (sabit) olabilir.
-    - `var` (değişken) olabilir.
-    - `Computed Property` (Hesaplanan değer) olabilir.
+    - let (sabit) olabilir.
+    - var (değişken) olabilir.
+    - Computed Property (Hesaplanan değer) olabilir.
 
 ```swift
 protocol UserProtocol {
@@ -324,13 +324,13 @@ struct UserC: UserProtocol {
 ```
 <br>
 
-### 2. `{ get set }` (Hem Okunabilir Hem Yazılabilir Zorunluluğu)
+### 2. { get set } (Hem Okunabilir Hem Yazılabilir Zorunluluğu)
 
 Protocol der ki: *"Ben bu veriyi hem okuyacağım hem de değiştireceğim. Ona göre bir değişken ver."*
 
 - Bunu uygulayan taraf:
-    - **SADECE `var` olabilir.**
-    - `let` OLAMAZ (Çünkü let değiştirilemez, set edilemez).
+    - **SADECE var olabilir.**
+    - let OLAMAZ (Çünkü let değiştirilemez, set edilemez).
     - Getter ve Setter'ı olan Computed Property olabilir.
 
 ```swift
@@ -349,40 +349,40 @@ struct Gamer: EditableUser {
 
 ### ❓ "State Tutmaz" Ne Demekti O Zaman?
 
-→ Inheritance'da (Class) `var energy = 100` dediğimizde, Class o **100** sayısını hafızada tutar.
-→ Protocol'de `var energy: Int { get set }` dediğimizde, Protocol hafızada yer ayırmaz. Sadece bir **talep formu** oluşturur.
+→ Inheritance'da (Class) var energy = 100 dediğimizde, Class o **100** sayısını hafızada tutar.
+→ Protocol'de var energy: Int { get set } dediğimizde, Protocol hafızada yer ayırmaz. Sadece bir **talep formu** oluşturur.
 
 
 <br>
 
 
-### ❓ Protocol İçinde `let` Tanımlayabilir miyiz?
+### ❓ Protocol İçinde let Tanımlayabilir miyiz?
 
 **Kısa Cevap:** **HAYIR, tanımlayamayız.** ✖️ 
 
-- Protocol içinde **her zaman `var`** kullanmak zorundayız.
+- Protocol içinde **her zaman var** kullanmak zorundayız.
 
 **Neden?**
 Çünkü Protocol, bir değişkenin "sabit" (let) veya "değişken" (var) olup olmadığıyla ilgilenmez. Bu, verinin hafızada nasıl tutulduğuyla ilgili bir **detaydır**. Protocol detaylara karışmaz.
 
 Protocol sadece **Erişim Hakkı (Access Level)** ile ilgilenir:
 
-- "Ben bunu okuyabilir miyim?" (`{ get }`)
-- "Ben bunu değiştirebilir miyim?" (`{ set }`)
+- "Ben bunu okuyabilir miyim?" ({ get })
+- "Ben bunu değiştirebilir miyim?" ({ set })
 
-Bu yüzden kural şudur: **Protocol içinde daima `var` yazarız.**
-Ama onu uygulayan (conform eden) struct/class, duruma göre `let` veya `var` yapabilir.
+Bu yüzden kural şudur: **Protocol içinde daima var yazarız.**
+Ama onu uygulayan (conform eden) struct/class, duruma göre let veya var yapabilir.
 
 <br>
 
 
-### ❓ Peki `{ get }` ve `{ set }` Neden Kullanıyoruz? (Amaç Ne?)
+### ❓ Peki { get } ve { set } Neden Kullanıyoruz? (Amaç Ne?)
 
 Bunu kullanmamızın sebebi yine o meşhur **Sol Taraf (Protocol Tipi)** ile ilgilidir.
 
-Sen bir değişkene `UserProtocol` etiketi yapıştırdığında, derleyici o değişkenin içindeki gerçek objeyi (Struct/Class) göremez. Sadece Protocol'de yazan kuralları görür.
+Sen bir değişkene UserProtocol etiketi yapıştırdığında, derleyici o değişkenin içindeki gerçek objeyi (Struct/Class) göremez. Sadece Protocol'de yazan kuralları görür.
 
-Eğer Protocol'de `{ get set }` demezsen, o değeri değiştiremezsin.
+Eğer Protocol'de { get set } demezsen, o değeri değiştiremezsin.
 
 <br>
 
@@ -390,7 +390,7 @@ Eğer Protocol'de `{ get set }` demezsen, o değeri değiştiremezsin.
 
 Diyelim ki bir **Email Değiştirme** fonksiyonu yazıyorsun.
 
-**Senaryo A: Protocol Sadece `{ get }` Demiş (Sadece Oku)**
+**Senaryo A: Protocol Sadece { get } Demiş (Sadece Oku)**
 
 ```swift
 protocol UserProtocol {
@@ -410,7 +410,7 @@ func changeEmail(user: inout UserProtocol) {
 
 <br>
 
-**Senaryo B: Protocol `{ get set }` (Oku ve Yaz)**
+**Senaryo B: Protocol { get set } (Oku ve Yaz)**
 
 ```swift
 protocol UserProtocol {
@@ -434,7 +434,7 @@ func changeEmail(user: inout UserProtocol) {
 
 ### Özetle Neden Kullanıyoruz?
 
-1. **Güvenlik:** Bazı verilerin dışarıdan değiştirilmesini istemeyiz. Protocol'de sadece `{ get }` diyerek, o veriyi **Read-Only (Sadece Okunabilir)** hale getiririz. (Encapsulation).
+1. **Güvenlik:** Bazı verilerin dışarıdan değiştirilmesini istemeyiz. Protocol'de sadece { get } diyerek, o veriyi **Read-Only (Sadece Okunabilir)** hale getiririz. (Encapsulation).
 2. **Derleyiciye Talimat:** Kodun geri kalanına *"Bak bu değişkeni değiştirmene izin veriyorum"* veya *"Sadece okumana izin veriyorum"* demek için kullanırız.
 
 # İleri Protocol Özellikleri
@@ -446,7 +446,7 @@ Biz bu yapıyı özellikle **Concurrency (Eşzamanlılık)** ve **Swift 6** geç
 **Neden Yaparız?**
 Runtime’da (çalışma anında) bir etkisi yoktur. Biz bunu tamamen **Derleyiciye (Compiler)** bir "Sertifika" veya "Rozet" göstermek için kullanırız.
 
-En kritik örneğimiz **Sendable** protokolüdür. Bir struct'a `Sendable` dediğimizde derleyiciye şu garantiyi veririz: *"Bak, bu obje Thread-Safe'tir. Yani arka plandaki thread'den ana thread'e veri taşırken veri bozulmaz, çökme olmaz. Gönül rahatlığıyla taşıyabilirsin."*
+En kritik örneğimiz **Sendable** protokolüdür. Bir struct'a Sendable dediğimizde derleyiciye şu garantiyi veririz: *"Bak, bu obje Thread-Safe'tir. Yani arka plandaki thread'den ana thread'e veri taşırken veri bozulmaz, çökme olmaz. Gönül rahatlığıyla taşıyabilirsin."*
 
 ```swift
 // Sendable İçinde hiçbir kural yok, Sadece bir "Rozet/İşaretçi".
@@ -478,7 +478,7 @@ func saveUser(user: Named & Ageable) {
 
 Generic yapılar kurarken (örneğin Array'ler veya kendi yazdığımız Wrapper'lar), o yapının yeteneklerini **içindeki elemana göre** belirleriz.
 
-**Örnek:**`[Int]` dizilerini birbirine `==` ile karşılaştırabiliriz ama `[User]` dizilerini karşılaştıramayabiliriz. Neden? Çünkü Array aptaldır, içindekine bakar.
+**Örnek:**[Int] dizilerini birbirine == ile karşılaştırabiliriz ama [User] dizilerini karşılaştıramayabiliriz. Neden? Çünkü Array aptaldır, içindekine bakar.
 
 Biz kodlarımızda **where** anahtar kelimesini kullanarak şöyle deriz:
 *"Eğer bu kutunun (Wrapper) içindeki **T** tipi karşılaştırılabilir (Equatable) ise, kutunun kendisi de karşılaştırılabilir olsun. Yoksa olmasın."*
@@ -505,7 +505,7 @@ Bu, bizim **3. Parti Kütüphanelerle** veya **Apple'ın kendi sınıflarıyla (
 Kodu bize ait olmayan, değiştiremeyeceğimiz sınıflara **sonradan** kendi protokolümüzü uygulatırız.
 
 **Nasıl Yaparız?**
-Kendi yazdığımız bir `JSONExportable` protokolümüz olsun. Apple'ın `String` sınıfının kaynak kodunu açıp içine yazamayız. Ama **Extension** açarak onu sanki bizim sistemimizin bir parçasıymış gibi davranmaya zorlarız. Böylece tüm sistemimiz tek bir dili konuşur.
+Kendi yazdığımız bir JSONExportable protokolümüz olsun. Apple'ın String sınıfının kaynak kodunu açıp içine yazamayız. Ama **Extension** açarak onu sanki bizim sistemimizin bir parçasıymış gibi davranmaya zorlarız. Böylece tüm sistemimiz tek bir dili konuşur.
 
 ```swift
 protocol JSONExportable {
@@ -542,8 +542,8 @@ OOP, **"X, Y'nin bir türüdür" (is-a)** ilişkisine dayanır. Yani "O da öyle
 
 **Örnek olarak:** Bir oyun geliştiriyoruz.
 
-- En tepede `Character` (Karakter) sınıfı var.
-- Altında `Attacker` (Kılıç atar) ve `Healer` (Can verir) sınıfları türettik.
+- En tepede Character (Karakter) sınıfı var.
+- Altında Attacker (Kılıç atar) ve Healer (Can verir) sınıfları türettik.
 
 ```swift
           [Character]
@@ -556,9 +556,9 @@ OOP, **"X, Y'nin bir türüdür" (is-a)** ilişkisine dayanır. Yani "O da öyle
 
 Proje yöneticisi geldi ve dedi ki: *"Yeni bir sınıf ekleyeceğiz: **Paladin**. Hem kılıçla saldıracak hem de kendini iyileştirebilecek."*
 
-- **Seçenek A:** `Attacker`'dan türetsek? -> İyileştirme kodunu kopyala-yapıştır yapman lazım.
-- **Seçenek B:** `Healer`'dan türetsek? -> Saldırı kodunu kopyala-yapıştır yapman lazım.
-- **Seçenek C (En Kötüsü):** Her şeyi en tepeye `Character` sınıfına taşırsak? -> Basit bir asker bile gereksiz yere "iyileştirme" yeteneği taşır.
+- **Seçenek A:** Attacker'dan türetsek? -> İyileştirme kodunu kopyala-yapıştır yapman lazım.
+- **Seçenek B:** Healer'dan türetsek? -> Saldırı kodunu kopyala-yapıştır yapman lazım.
+- **Seçenek C (En Kötüsü):** Her şeyi en tepeye Character sınıfına taşırsak? -> Basit bir asker bile gereksiz yere "iyileştirme" yeteneği taşır.
 
 Bu **"Dikey"** bir problemdir. Ağaç dallanıp budaklandıkça, en alttaki bir sınıf, en tepedeki tüm özellikleri (gereksiz olsa bile) sırtında taşır. Buna **Tight Coupling (Sıkı Bağlılık)** denir.
 
@@ -643,7 +643,7 @@ class Dog: Animal {
 }
 ```
 
-**Sorun:** `Dog` sınıfı `Animal`'dan türediği an, `energy` değişkenini de hafızasında tutmak **zorundadır**. Belki senin oyununda köpeğin enerjiye ihtiyacı yok? Kurtulamazsın.
+**Sorun:** Dog sınıfı Animal'dan türediği an, energy değişkenini de hafızasında tutmak **zorundadır**. Belki senin oyununda köpeğin enerjiye ihtiyacı yok? Kurtulamazsın.
 
 - **Protocol Farkı:** Protocoller **State (veri) tutmaz**, sadece kuralları belirler. Gereksiz yük taşımazsın.
 
@@ -668,9 +668,9 @@ class Dog: Animal {
 }
 ```
 
-**Sorun:** `Dog` sınıfı `override` ederek Parent'ın (`Animal`) kurduğu mantığı bilmeden bozdu (`prepareThroat` çalışmadı). Parent değişirse Child beklenmedik şekilde patlayabilir.
+**Sorun:** Dog sınıfı override ederek Parent'ın (Animal) kurduğu mantığı bilmeden bozdu (prepareThroat çalışmadı). Parent değişirse Child beklenmedik şekilde patlayabilir.
 
-- **Protocol Farkı:** Protocollerde `override` riski yoktur. Her sınıf kendi mantığını bağımsız kurar.
+- **Protocol Farkı:** Protocollerde override riski yoktur. Her sınıf kendi mantığını bağımsız kurar.
 
 <br>
 
@@ -736,7 +736,7 @@ class HomeViewController: BaseViewController {
 }
 ```
 
-**Sorun:** `HomeVC`, `BaseVC`'ye göbekten bağlı. Yarın `BaseVC` içine gereksiz 50 tane fonksiyon eklense, `HomeVC` hepsini sırtında taşır.
+**Sorun:** HomeVC, BaseVC'ye göbekten bağlı. Yarın BaseVC içine gereksiz 50 tane fonksiyon eklense, HomeVC hepsini sırtında taşır.
 
 
 <br>
@@ -764,7 +764,7 @@ protocol Alertable {
 
 extension Alertable where Self: UIViewController {
     func showAlert(message: String) {
-        print("✅ Alert: \(message)")
+        print("✔︎ Alert: \(message)")
     }
 }
 
@@ -810,3 +810,4 @@ Eğer en ufak bir şüphe varsa (kare örneğindeki gibi): **Inheritance YANLIŞ
 "OOP'deki inheritance (kalıtım) yapısında, bir sınıfın özelliklerini değiştirmek istediğimizde tüm alt sınıflar etkilenir. Ebeveyn sınıfın hem 'Hafızasını' (State) hem de 'Hatalarını' miras alırız. Ancak Protokoller ile dikey bir hiyerarşiye sıkışmadan, nesnelere yatay olarak özellik (capability) ekleyebiliriz. Bu da kodumuzu daha esnek (decoupled), test edilebilir ve 'Side Effect'lerden (yan etkilerden) arınmış yapar.”
 
 ---
+
