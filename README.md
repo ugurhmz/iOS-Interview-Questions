@@ -10,4 +10,5 @@ iOS Developer perspektifiyle hazırlanmış iOS mülakat notları ve derin tekni
 - [♟️ MVVM, Clean Architecture & Adapter Pattern](https://github.com/ugurhmz/MVVM-CleanArch-AdapterPatternApp)
 - [🌐 Ugur Network Library / Core Networking – SPM Based Network Layer](https://github.com/ugurhmz/CoreNetworking)
 - [⚫️ Swift Derinlemesine POP & Inheritance](Swift-POP-vs-Inheritance/)
+- [⚜️ Architectural Design Patterns & Principles](Arch-DesignPatterns-And-Principles/)
 
