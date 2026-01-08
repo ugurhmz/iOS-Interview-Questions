@@ -1,5 +1,9 @@
 # Architectural Design Patterns & Principles 
 
+<img width="1280" height="880" alt="Architectural Design Patterns   Principles" src="https://github.com/user-attachments/assets/7c854c45-fe0e-4441-84e0-b5e927dc219b" />
+
+
+
 <br>
 <br>
 
@@ -227,3 +231,4 @@ Biz bu mimariyi Xcode’da klasör açarak değil, **Workspace** ve **Local Swif
         │   └── DetailVC.swift
         └── Package.swift  <-- (Dependencies: Core, UIKits)
 ```
+
